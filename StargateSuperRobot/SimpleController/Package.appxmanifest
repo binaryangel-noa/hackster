@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:iot="http://schemas.microsoft.com/appx/manifest/iot/windows10" IgnorableNamespaces="uap mp iot">
+  <Identity Name="f22fd825-f9ef-4f37-bda2-0d18cefa4e95" Publisher="CN=Peadaran" Version="1.0.0.0" />
+  <mp:PhoneIdentity PhoneProductId="f22fd825-f9ef-4f37-bda2-0d18cefa4e95" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Properties>
+    <DisplayName>SimpleController</DisplayName>
+    <PublisherDisplayName>Peadaran</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="SimpleController.App">
+      <uap:VisualElements DisplayName="SimpleController" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="SimpleController" BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
+        </uap:DefaultTile>
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <Capability Name="internetClientServer" />
+    <uap:Capability Name="picturesLibrary" />
+    <uap:Capability Name="musicLibrary" />
+    <uap:Capability Name="videosLibrary" />
+    <iot:Capability Name="lowLevelDevices" />
+    <DeviceCapability Name="microphone" />
+    <DeviceCapability Name="webcam" />
+    <DeviceCapability Name="109b86ad-f53d-4b76-aa5f-821e2ddf2141" />
+  </Capabilities>
+</Package>

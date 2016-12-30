@@ -1,0 +1,60 @@
+﻿<Window x:Class="RemoteControl.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ignore="http://www.galasoft.ch/ignore"
+        mc:Ignorable="d ignore"
+        Height="300"
+        Width="600"
+        Title="Star Gate Rover Control Center"
+        DataContext="{Binding AppShell, Source={StaticResource Locator}}">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Skins/MainSkin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.906,1.164"
+                                 StartPoint="0.244,-0.159">
+            <GradientStop Color="#FFA20000"
+                              Offset="0" />
+            <GradientStop Color="#FFCD7C10"
+                              Offset="1" />
+        </LinearGradientBrush>
+    </Window.Background>
+    <TabControl>
+        <TabControl.Background>
+            <SolidColorBrush Color="Transparent"></SolidColorBrush>
+        </TabControl.Background>
+        <TabItem IsSelected="{Binding IsStartPageSelected}">
+            <TabItem.Header>Start</TabItem.Header>
+            <Frame Source="View\RemoteControl.xaml">
+            </Frame>
+        </TabItem>
+        <TabItem IsSelected="{Binding IsEventsPageSelected}">
+            <TabItem.Header>Events</TabItem.Header>
+            <Frame Source="View\Events.xaml">
+            </Frame>
+        </TabItem>
+        <TabItem IsSelected="{Binding IsAdministrationPageSelected}">
+            <TabItem.Header>Administration</TabItem.Header>
+            <Frame Source="View\Administration.xaml">
+            </Frame>
+        </TabItem>
+    </TabControl>
+    <!--<Grid x:Name="LayoutRoot">
+
+        <TextBlock FontSize="36"
+                   FontWeight="Bold"
+                   Foreground="Purple"
+                   Text="{Binding WelcomeTitle}"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   TextWrapping="Wrap" />
+
+    </Grid>-->
+</Window>

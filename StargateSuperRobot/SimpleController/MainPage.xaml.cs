@@ -42,10 +42,12 @@ namespace SimpleController
         private DeviceClient mDeviceClient;
         private ObstacleSensors mObstacleSensors;
         private PanTiltServo mPanTiltServo;
-        private Camera mCamera;
+        private LowLagCaptureCamera mCamera;
 
         public MainPage()
         {
+            AppInsights.Client.TrackPageView(nameof(MainPage));
+
             if (LightningProvider.IsLightningEnabled)
             {
                 LowLevelDevicesController.DefaultProvider = LightningProvider.GetAggregateProvider();
@@ -66,10 +68,9 @@ namespace SimpleController
             else
             {
                 mWheels = new FakeWheels();
-                mPanTiltServo = new PanTiltServo();
             }
 
-            mCamera = new Camera();
+            mCamera = new LowLagCaptureCamera();
             mCamera.Init();
             mWheels.Init();
             NetworkInformation.NetworkStatusChanged += NetworkInformation_NetworkStatusChanged;
@@ -182,7 +183,6 @@ namespace SimpleController
         {
             while (true)
             {
-
                 try
                 {
                     Message receivedMessage = await mDeviceClient.ReceiveAsync();

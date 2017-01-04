@@ -1,7 +1,4 @@
 ﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using Microsoft.Azure.Devices;
-using Microsoft.Azure.Devices.Common.Exceptions;
 using Microsoft.ServiceBus.Messaging;
 using RemoteControl.Wpf.Model;
 using System;
@@ -9,21 +6,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace RemoteControl.Wpf.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that a View can data bind to.
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
     public class EventsReaderViewModel : ViewModelBase
     {
         public delegate void BitmapAquiredEventHandler(object sender, BitmapSource e);
@@ -32,9 +24,6 @@ namespace RemoteControl.Wpf.ViewModel
         static string iotHubD2cEndpoint = "messages/events";
         static EventHubClient eventHubClient;
 
-        /// <summary>
-        /// Initializes a new instance of the Administration class.
-        /// </summary>
         public EventsReaderViewModel()
         {
             DeviceId = Globals.DEVICE_ID;
@@ -60,6 +49,7 @@ namespace RemoteControl.Wpf.ViewModel
             {
                 tasks.Add(receiveMessagesFromDeviceAsync(partition, cts.Token));
             }
+            tasks.Add(receiveWebSocketMessagesFromDeviceAsync(cts.Token));
         }
 
         private string mDeviceId;
@@ -128,7 +118,73 @@ namespace RemoteControl.Wpf.ViewModel
                     {
                         addToLog(ex.Message.ToString());
                     }
-                    
+
+                }
+            }
+            catch (Exception ex)
+            {
+                addToLog(ex.Message.ToString());
+            }
+        }
+
+        private async Task receiveWebSocketMessagesFromDeviceAsync(CancellationToken ct)
+        {
+            try
+            {
+                //string wsUri = $"ws://localhost:4928/ws/?device={Globals.DEVICE_ID}";
+                string wsUri = $"ws://sgnexus.azurewebsites.net/ws/?device={Globals.DEVICE_ID}";
+                var socket = new ClientWebSocket();
+                await socket.ConnectAsync(new Uri(wsUri), ct);
+
+                while (true)
+                {
+                    try
+                    {
+                        if (ct.IsCancellationRequested) break;
+
+                        var buffer = new ArraySegment<Byte>(new Byte[40960]);
+                        WebSocketReceiveResult rcvResult = await socket.ReceiveAsync(buffer, ct);
+                        string b64 = String.Empty;
+                        if (rcvResult.MessageType == WebSocketMessageType.Text)
+                        {
+                            b64 = Encoding.ASCII.GetString(buffer.ToArray().Take(rcvResult.Count).ToArray());
+                            if (rcvResult.EndOfMessage == false)
+                            {
+                                do
+                                {
+                                    rcvResult = await socket.ReceiveAsync(buffer, ct);
+                                    if (rcvResult.MessageType == WebSocketMessageType.Text)
+                                    {
+                                        b64 += Encoding.ASCII.GetString(buffer.ToArray().Take(rcvResult.Count).ToArray());
+                                    }
+
+                                } while (rcvResult.EndOfMessage == false);
+                            }
+
+                            MemoryStream ms = new MemoryStream(Convert.FromBase64String(b64));
+
+                            var image = Image.FromStream(ms);
+                            var oldBitmap = new Bitmap(image);
+                            var bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                                        oldBitmap.GetHbitmap(System.Drawing.Color.Transparent),
+                                        IntPtr.Zero,
+                                        new Int32Rect(0, 0, oldBitmap.Width, oldBitmap.Height),
+                                        null);
+
+                            var del = BitmapAquired;
+                            if (del != null)
+                            {
+                                del(this, bitmapSource);
+                            }
+                            //var picturespath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                            //image.Save(Path.Combine(picturespath, "lastimagefromrover.jpp"));
+                            addToLog(string.Format("Image message received"));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        addToLog(ex.Message.ToString());
+                    }
                 }
             }
             catch (Exception ex)

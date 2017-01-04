@@ -16,7 +16,7 @@ using Windows.Storage.Streams;
 
 namespace SimpleController.Domain
 {
-    public class Camera
+    public class IoTHubCamera
     {
         private DeviceClient mDeviceClient;
         private CancellationTokenSource mCancelaationToken;
@@ -25,7 +25,7 @@ namespace SimpleController.Domain
         private DateTime mStartTime;
         private TimeSpan mAutoStopAfter = new TimeSpan(0, 5, 0);
 
-        public Camera()
+        public IoTHubCamera()
         {
             mDeviceClient = DeviceClient.Create(App.IOTHUB_URI, new DeviceAuthenticationWithRegistrySymmetricKey(MainPage.GetUniqueDeviceId(), App.DEVICE_KEY));
             mMediaCapture = new MediaCapture();
@@ -64,8 +64,6 @@ namespace SimpleController.Domain
                             message.Properties["path"] = "imagefeed";
                             await mDeviceClient.SendEventAsync(message);
                         }
-                        
-                        await Task.Delay(300);
                     }
                     catch (Exception ex)
                     {

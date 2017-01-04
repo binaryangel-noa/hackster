@@ -32,6 +32,7 @@ namespace SimpleController
         /// </summary>
         public App()
         {
+            AppInsights.Client.TrackTrace($"{nameof(App)} is launching");
             Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
                 Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
                 Microsoft.ApplicationInsights.WindowsCollectors.Session);

@@ -27,7 +27,7 @@ namespace SimpleController.Domain
 
         public IoTHubCamera()
         {
-            mDeviceClient = DeviceClient.Create(App.IOTHUB_URI, new DeviceAuthenticationWithRegistrySymmetricKey(MainPage.GetUniqueDeviceId(), App.DEVICE_KEY));
+            mDeviceClient = DeviceClient.Create(Globals.IOTHUB_URI, new DeviceAuthenticationWithRegistrySymmetricKey(MainPage.GetUniqueDeviceId(), Globals.DEVICE_KEY));
             mMediaCapture = new MediaCapture();
         }
 
@@ -64,6 +64,8 @@ namespace SimpleController.Domain
                             message.Properties["path"] = "imagefeed";
                             await mDeviceClient.SendEventAsync(message);
                         }
+                        
+                        ////await Task.Delay(300);
                     }
                     catch (Exception ex)
                     {

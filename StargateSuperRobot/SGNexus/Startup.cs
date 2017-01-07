@@ -18,7 +18,7 @@ namespace SGNexus
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-            
+
             if (env.IsEnvironment("Development"))
             {
                 // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
@@ -52,7 +52,14 @@ namespace SGNexus
             app.UseMvc();
 
             app.UseWebSockets();
-            app.UseMiddleware<ImageReceiverWebSocketMiddleware>();
+            app.Map("/ws/receiver", (sub) =>
+            {
+                sub.UseMiddleware<ImageReceiverWebSocketMiddleware>();
+            });
+            app.Map("/ws/sender", (sub) =>
+            {
+                sub.UseMiddleware<ImageSenderWebSocketMiddleware>();
+            });
         }
     }
 }

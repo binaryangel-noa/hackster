@@ -101,11 +101,12 @@
     </Compile>
     <Compile Include="AppInsights.cs" />
     <Compile Include="Domain\IoTHubCamera.cs" />
-    <Compile Include="Domain\LowLagCaptureCamera.cs" />
+    <Compile Include="Domain\WebSocketCamera.cs" />
     <Compile Include="Domain\FakeWheels.cs" />
     <Compile Include="Domain\IWheels.cs" />
     <Compile Include="Domain\ObstacleSensors.cs" />
     <Compile Include="Domain\PanTiltServo.cs" />
+    <Compile Include="Globals.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

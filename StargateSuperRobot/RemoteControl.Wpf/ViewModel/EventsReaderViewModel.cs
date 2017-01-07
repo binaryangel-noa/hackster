@@ -131,12 +131,11 @@ namespace RemoteControl.Wpf.ViewModel
         {
             try
             {
-                //string wsUri = $"ws://localhost:4928/ws/?device={Globals.DEVICE_ID}";
-                string wsUri = $"ws://sgnexus.azurewebsites.net/ws/?device={Globals.DEVICE_ID}";
+                string wsUri = $"{Globals.WEBSOCKET_ENDPOINT}?device={Globals.DEVICE_ID}";
                 var socket = new ClientWebSocket();
                 await socket.ConnectAsync(new Uri(wsUri), ct);
 
-                while (true)
+                while (socket.State == WebSocketState.Open)
                 {
                     try
                     {
@@ -145,23 +144,16 @@ namespace RemoteControl.Wpf.ViewModel
                         var buffer = new ArraySegment<Byte>(new Byte[40960]);
                         WebSocketReceiveResult rcvResult = await socket.ReceiveAsync(buffer, ct);
                         string b64 = String.Empty;
-                        if (rcvResult.MessageType == WebSocketMessageType.Text)
+                        if (rcvResult.MessageType == WebSocketMessageType.Binary)
                         {
-                            b64 = Encoding.ASCII.GetString(buffer.ToArray().Take(rcvResult.Count).ToArray());
-                            if (rcvResult.EndOfMessage == false)
+                            List<byte> data = new List<byte>(buffer.Take(rcvResult.Count));
+                            while (rcvResult.EndOfMessage == false)
                             {
-                                do
-                                {
-                                    rcvResult = await socket.ReceiveAsync(buffer, ct);
-                                    if (rcvResult.MessageType == WebSocketMessageType.Text)
-                                    {
-                                        b64 += Encoding.ASCII.GetString(buffer.ToArray().Take(rcvResult.Count).ToArray());
-                                    }
-
-                                } while (rcvResult.EndOfMessage == false);
+                                rcvResult = await socket.ReceiveAsync(buffer, CancellationToken.None);
+                                data.AddRange(buffer.Take(rcvResult.Count));
                             }
 
-                            MemoryStream ms = new MemoryStream(Convert.FromBase64String(b64));
+                            MemoryStream ms = new MemoryStream(data.ToArray());
 
                             var image = Image.FromStream(ms);
                             var oldBitmap = new Bitmap(image);
@@ -176,8 +168,8 @@ namespace RemoteControl.Wpf.ViewModel
                             {
                                 del(this, bitmapSource);
                             }
-                            //var picturespath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                            //image.Save(Path.Combine(picturespath, "lastimagefromrover.jpp"));
+                            var picturespath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                            image.Save(Path.Combine(picturespath, "lastimagefromrover.jpg"));
                             addToLog(string.Format("Image message received"));
                         }
                     }

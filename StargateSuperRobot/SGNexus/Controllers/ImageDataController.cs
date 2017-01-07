@@ -18,32 +18,32 @@ namespace SGNexus.Controllers
         [HttpPut("{id}")]
         public async void Put(string id, [FromBody]PutRequest imageData)
         {
-var data = Convert.FromBase64String(imageData.Image);
+            var data = Convert.FromBase64String(imageData.Image);
 
-var socketconnectionList = ImageReceiverWebSocketMiddleware.Connections.Where(x => x.DeviceId.Equals(id)).ToArray();
+            var socketconnectionList = ImageReceiverWebSocketMiddleware.Connections.Where(x => x.DeviceId.Equals(id)).ToArray();
 
-foreach (var socketconnection in socketconnectionList)
-{
-    var socket = socketconnection.SocketConnection;
-    if (socket.State == System.Net.WebSockets.WebSocketState.Open)
-    {
-        var type = WebSocketMessageType.Text;
-        var buffer = new ArraySegment<Byte>(Encoding.ASCII.GetBytes(imageData.Image));
-        try
-        {
-            await socket.SendAsync(buffer, type, true, CancellationToken.None);
-        }
-        catch (Exception ex)
-        {
-            AppInsights.Client.TrackException(ex);
-        }
-    }
-    else
-    {
-        AppInsights.Client.TrackTrace("Removing closed connection");
-        ImageReceiverWebSocketMiddleware.Connections.Remove(socketconnection);
-    }
-}
+            foreach (var socketconnection in socketconnectionList)
+            {
+                var socket = socketconnection.SocketConnection;
+                if (socket.State == System.Net.WebSockets.WebSocketState.Open)
+                {
+                    var type = WebSocketMessageType.Text;
+                    var buffer = new ArraySegment<Byte>(Encoding.ASCII.GetBytes(imageData.Image));
+                    try
+                    {
+                        await socket.SendAsync(buffer, type, true, CancellationToken.None);
+                    }
+                    catch (Exception ex)
+                    {
+                        AppInsights.Client.TrackException(ex);
+                    }
+                }
+                else
+                {
+                    AppInsights.Client.TrackTrace("Removing closed connection");
+                    ImageReceiverWebSocketMiddleware.Connections.Remove(socketconnection);
+                }
+            }
         }
     }
 }

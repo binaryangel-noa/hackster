@@ -16,7 +16,7 @@ namespace SimpleController.Domain
 
         public FakeWheels()
         {
-            mDeviceClient = DeviceClient.Create(App.IOTHUB_URI, new DeviceAuthenticationWithRegistrySymmetricKey(MainPage.GetUniqueDeviceId(), App.DEVICE_KEY));
+            mDeviceClient = DeviceClient.Create(Globals.IOTHUB_URI, new DeviceAuthenticationWithRegistrySymmetricKey(MainPage.GetUniqueDeviceId(), Globals.DEVICE_KEY));
 
             Task.Run(() =>
             {

@@ -42,7 +42,7 @@ namespace SimpleController
         private DeviceClient mDeviceClient;
         private ObstacleSensors mObstacleSensors;
         private PanTiltServo mPanTiltServo;
-        private LowLagCaptureCamera mCamera;
+        private WebSocketCamera mCamera;
 
         public MainPage()
         {
@@ -54,7 +54,7 @@ namespace SimpleController
             }
 
             this.InitializeComponent();
-            mDeviceClient = DeviceClient.Create(App.IOTHUB_URI, new DeviceAuthenticationWithRegistrySymmetricKey(GetUniqueDeviceId(), App.DEVICE_KEY), TransportType.Amqp);
+            mDeviceClient = DeviceClient.Create(Globals.IOTHUB_URI, new DeviceAuthenticationWithRegistrySymmetricKey(GetUniqueDeviceId(), Globals.DEVICE_KEY), TransportType.Amqp);
             registerKeyEvents();
 
             var hasGpio = GpioController.GetDefault() != null;
@@ -70,8 +70,7 @@ namespace SimpleController
                 mWheels = new FakeWheels();
             }
 
-            mCamera = new LowLagCaptureCamera();
-            mCamera.Init();
+            mCamera = new WebSocketCamera();
             mWheels.Init();
             NetworkInformation.NetworkStatusChanged += NetworkInformation_NetworkStatusChanged;
             Task.Run(() =>
@@ -195,7 +194,7 @@ namespace SimpleController
                             var createdDateTime = new DateTime(long.Parse(rawvalue));
                             var now = DateTime.UtcNow;
                             var difference = now - createdDateTime;
-                            if (difference > new TimeSpan(0, 0, 0, 0, 500))
+                            if (difference > new TimeSpan(0, 0, 0, 0, 999))
                             {
                                 await mDeviceClient.RejectAsync(receivedMessage);
                                 continue;

@@ -18,7 +18,6 @@ namespace DataCollector
             task.Wait();
             
             _instance=  task.Result;
-            //_instance.D3.Color = new FEZHAT.Color(0, 0, 255);
         }
 
         internal CrossCuttingRT.Dto.SensorsDataDto ReadSensorData()
@@ -30,15 +29,6 @@ namespace DataCollector
                 dto.Temperature = _instance.GetTemperature();
 
                 dto.LightLevel = _instance.GetLightLevel();
-
-                //if (_instance.D2.Color.R == 255)
-                //{
-                //    _instance.D2.Color = new FEZHAT.Color(0, 255, 0);
-                //}
-                //else
-                //{
-                //    _instance.D2.Color = new FEZHAT.Color(255, 0, 0);
-                //}
 
                 return dto;
             }

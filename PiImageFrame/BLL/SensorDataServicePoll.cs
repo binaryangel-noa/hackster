@@ -11,7 +11,6 @@ namespace BLL
 {
     public class SensorDataServicePoll
     {
-
         private ThreadPoolTimer _timer;
 
         private static volatile bool _running;
@@ -49,10 +48,11 @@ namespace BLL
         {
             CrossCuttingRT.Dto.SensorsDataDto result = null;
 
-            using (var demoService = new AppServiceConnection())
+            using (var dataService = new AppServiceConnection())
             {
                 var listing = await AppServiceCatalog.FindAppServiceProvidersAsync("DataCollectorInterface");
                 var packageName = "";
+
                 // there may be cases where other applications could expose the same App Service Name, in our case
                 // we only have the one
                 if (listing.Count == 1)
@@ -60,17 +60,15 @@ namespace BLL
                     packageName = listing[0].PackageFamilyName;
                 }
 
-                demoService.AppServiceName = "DataCollectorInterface";
-                demoService.PackageFamilyName = packageName;
-                var status = await demoService.OpenAsync();
-
-                //System.Diagnostics.Debug.WriteLineIf(status != AppServiceConnectionStatus.Success, "Could not connect to the App Service: " + status.ToString());
+                dataService.AppServiceName = "DataCollectorInterface";
+                dataService.PackageFamilyName = packageName;
+                var status = await dataService.OpenAsync();
 
                 if (status == AppServiceConnectionStatus.Success)
                 {
                     var msg = new ValueSet();
                     msg.Add("Request", "SensorData");
-                    AppServiceResponse request = await demoService.SendMessageAsync(msg);
+                    AppServiceResponse request = await dataService.SendMessageAsync(msg);
 
                     if (request.Status == AppServiceResponseStatus.Success)
                     {

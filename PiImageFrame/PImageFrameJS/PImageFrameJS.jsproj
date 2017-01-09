@@ -41,6 +41,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>d0c4dfe3-6301-4838-b05b-31032cd567c9</ProjectGuid>
     <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TypeScriptCompileOnSaveEnabled>false</TypeScriptCompileOnSaveEnabled>

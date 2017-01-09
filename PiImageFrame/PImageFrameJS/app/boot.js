@@ -1,5 +1,5 @@
 define(["require", "exports", 'angular2/platform/browser', 'angular2/router', './app'], function (require, exports, browser_1, router_1, app_1) {
-    "use strict";
     browser_1.bootstrap(app_1.App, [router_1.ROUTER_PROVIDERS]);
 });
-//# sourceMappingURL=boot.js.map
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJhcHAvYm9vdC5qcyJdLCJzb3VyY2VzQ29udGVudCI6WyJkZWZpbmUoW1wicmVxdWlyZVwiLCBcImV4cG9ydHNcIiwgJ2FuZ3VsYXIyL3BsYXRmb3JtL2Jyb3dzZXInLCAnYW5ndWxhcjIvcm91dGVyJywgJy4vYXBwJ10sIGZ1bmN0aW9uIChyZXF1aXJlLCBleHBvcnRzLCBicm93c2VyXzEsIHJvdXRlcl8xLCBhcHBfMSkge1xuICAgIGJyb3dzZXJfMS5ib290c3RyYXAoYXBwXzEuQXBwLCBbcm91dGVyXzEuUk9VVEVSX1BST1ZJREVSU10pO1xufSk7XG4iXSwiZmlsZSI6ImFwcC9ib290LmpzIiwic291cmNlUm9vdCI6Ii9zb3VyY2UvIn0=

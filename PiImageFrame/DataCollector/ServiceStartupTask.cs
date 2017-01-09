@@ -37,8 +37,6 @@ namespace DataCollector
 
                 _connection = triggerDetails.AppServiceConnection;
                 _connection.RequestReceived += Connection_RequestReceived;
-                
-                ////ThreadPoolTimer.CreatePeriodicTimer(_timerElapsed, TimeSpan.FromSeconds(1));
             }
 
             

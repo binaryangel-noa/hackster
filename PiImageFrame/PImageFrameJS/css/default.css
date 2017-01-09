@@ -1,0 +1,19 @@
+﻿body {
+    padding-top: 0px;
+    padding-bottom: 70px;
+    background-color: aqua;
+}
+
+nav {
+    z-index: 99;
+    opacity: 0.5;
+}
+
+.shell-opacity {
+    background-color: black;
+    opacity: 0.5;
+}
+
+main {
+    height: 100%;
+}

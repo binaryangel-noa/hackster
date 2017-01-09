@@ -1,0 +1,14 @@
+﻿<style>
+    .images-preview {
+        margin-top: 70px;
+        padding-bottom: 70px;
+    }
+</style>
+<div class="container images-preview" style="min-height:100%; height: 100%; ">
+    <div class="container-fluid" style="height:100%; overflow-y:auto">
+        <div *ngFor="#image of images" style="display:inline-block; ">
+            <img [src]="image" style="width: 80px; height: 80px;" />
+        </div>
+    </div>
+    <button class="btn btn-primary" (click)="copy()" >Copy!</button>
+</div>

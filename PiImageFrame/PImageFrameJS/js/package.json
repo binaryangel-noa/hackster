@@ -1,0 +1,31 @@
+{
+  "name": "commonjs-require",
+  "version": "1.4.6",
+  "description": "browser-side CommonJS require() function.",
+  "main": "node.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:efacilitation/commonjs-require.git"
+  },
+  "keywords": [
+    "commonjs",
+    "module",
+    "require",
+    "define"
+  ],
+  "author": {
+    "name": "efa GmbH",
+    "email": "team@efa-gmbh.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/efacilitation/commonjs-require/issues"
+  },
+  "readme": "# CommonJS Require\n\nbrowser-side [CommonJS require() function](http://wiki.commonjs.org/wiki/Modules/1.1.1#Require).\n\n## Usage\n\nAdd `commonjs-require.js` as script src to your site.\n\n\n### Example\n\n```html\n<script src=\"commonjs-require.js\"></script>\n<script>\nrequire.register(\"module\", function(exports, require, module){\n  /* Some Module content */\n  module.exports = \"content\"\n})\nalert(require('module'))\n</script>\n```\n\nThis will alert `content`\n\n\n## Automated wrapping into `require.register`\n\n* [gulp-wrap-commonjs](https://github.com/efacilitation/gulp-wrap-commonjs)\n* [grunt-wrap-commonjs](https://github.com/efacilitation/grunt-wrap-commonjs)\n\n\n## Why not browserify?\n\nBrowserify requires (scnr) that you use some magic AST/require.resolve mechanism to built your CommonJS package/files for the browser. This is really complex - especially if you have to bundle different files for different sections of your website, use dynamic requires or have circular dependencies.\n\n\n## API\n\n* `require(name)` — loads registered module and returns its `exports`.\n* `require.register(name, fn)` — registers new module. `fn` should have signature `exports, require, module`.\n* `require.list()` — lists all registered modules.\n\n## Node Module support\n\ncommonjs-require emulates the actual loading mechanism from Node.js in that it delegates all require() calls to\nModule._load() (Module is exposed via the \"module\" module). This improves support for modules which rely on the Node\nmodule system implementation (for example Mockery).\n\n### Module API\n\n* `Module._load(request, parent)` - does the actual module loading and instantiation\n* `Module._cache` - is the cache of loaded modules, can be cleared by assigning an empty object\n* `Module._resolveFilename` - determines the actual module id (e.g. adds \"index\" if its missing)\n\n## License\n\nMIT\n\n* Copyright (c) 2014 [efa GmbH](http://efa-gmbh.com) ([Initial Reason of Fork](https://github.com/brunch/commonjs-require-definition/pull/8))\n* Copyright (c) 2013-2014 [Paul Miller](http://paulmillr.com/)\n",
+  "readmeFilename": "README.md",
+  "homepage": "https://github.com/efacilitation/commonjs-require",
+  "_id": "commonjs-require@1.4.6",
+  "_shasum": "caff5a7e5663321d8ad0308a1ab2ce1766ed2253",
+  "_from": "commonjs-require@1.4.6",
+  "_resolved": "https://registry.npmjs.org/commonjs-require/-/commonjs-require-1.4.6.tgz"
+}

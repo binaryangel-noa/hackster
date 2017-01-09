@@ -1,0 +1,13 @@
+{
+  "name": "commonjs-require",
+  "description": "browser-side CommonJS require() function.",
+  "version": "1.4.5",
+  "keywords": ["cjs", "commonjs", "module", "require", "define"],
+  "main": "commonjs-require.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "node.js"
+  ]
+}

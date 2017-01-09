@@ -1,0 +1,2 @@
+﻿https://login.live.com/oauth20_authorize.srf?client_id=000000004018D44E&scope=wl.signin wl.offline_access onedrive.readwrite&response_type=token
+&redirect_uri=about:blank
